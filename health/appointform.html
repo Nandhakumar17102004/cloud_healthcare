@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Care</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icons">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" 
+    integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .appointment-form {
+            background-color: #2f5d68;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .appointment-form select,
+        .appointment-form input,
+        .appointment-form textarea,
+        .appointment-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: none;
+        }
+
+        .appointment-form button {
+            background: #ffffff;
+            color: #2f5d68;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .appointment-form button:hover {
+            background: #1c3f48;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Existing Content -->
+    <section class="background">
+        <nav class="navbar">
+            <!-- Existing Navbar Content -->
+        </nav>
+        <div class="main">
+            <div class="text-box">
+                <!-- Existing Text Content -->
+            </div>
+            <div class="box">
+                <h1>appointment</h1>
+                <form id="initialForm">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="tel" name="number" placeholder="Phone Number" required>
+                    <button type="submit" class="btn btn2">Book Appointment</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Appointment Form -->
+    <div id="appointmentModal" class="modal">
+        <div class="appointment-form">
+            <span class="close">&times;</span>
+            <h2>Appointment Details</h2>
+            <form id="detailedForm">
+                <label for="department">Select Department</label>
+                <select id="department" required>
+                    <option value="">Select Department</option>
+                    <option>Cardiology</option>
+                    <option>Dermatology</option>
+                    <option>Orthopedics</option>
+                    <option>General Medicine</option>
+                </select>
+
+                <label for="doctor">Select Doctor</label>
+                <select id="doctor" required>
+                    <option value="">Select Doctor</option>
+                    <option>Dr. Smith</option>
+                    <option>Dr. Johnson</option>
+                    <option>Dr. Brown</option>
+                    <option>Dr. Davis</option>
+                </select>
+
+                <label for="date">Select Date</label>
+                <input type="date" id="date" required>
+
+                <label for="time">Preferred Time</label>
+                <input type="time" id="time" required>
+
+                <label for="symptoms">Describe Your Symptoms</label>
+                <textarea id="symptoms" rows="3" required></textarea>
+
+                <button type="submit">Confirm Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rest of your existing content -->
+
+    <script>
+        // Handle initial form submission
+        document.getElementById('initialForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('appointmentModal').style.display = 'flex';
+        });
+
+        // Close modal
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('appointmentModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('appointmentModal')) {
+                document.getElementById('appointmentModal').style.display = 'none';
+            }
+        }
+
+        // Handle detailed form submission
+        document.getElementById('detailedForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                name: document.querySelector('#initialForm [name="name"]').value,
+                email: document.querySelector('#initialForm [name="email"]').value,
+                number: document.querySelector('#initialForm [name="number"]').value,
+                department: document.getElementById('department').value,
+                doctor: document.getElementById('doctor').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                symptoms: document.getElementById('symptoms').value
+            };
+
+            // Here you would typically send the data to a server
+            console.log('Appointment Data:', formData);
+            alert('Appointment booked successfully!');
+            document.getElementById('appointmentModal').style.display = 'none';
+        });
+    </script>
+    
+</body>
+</html>

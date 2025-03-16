@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Healthcare Services</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courgette&family=Gabarito&family=Inclusive+Sans&family=Inter&family=Montserrat&family=Poppins&family=Raleway&family=Roboto&family=Space+Grotesk&family=Ubuntu&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            text-transform: capitalize;
+            transition: all 0.5s linear;
+            font-family: 'Inclusive Sans', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .background {
+            height: 100vh;
+            width: 100%;
+            background-image: linear-gradient(rgba(2 10 10/57%), rgba(2 10 10/20%)), url(/api/placeholder/1600/900);
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .navbar img {
+            width: 80px;
+        }
+
+        .navbar-items {
+            flex: 1;
+            text-align: right;
+        }
+
+        .navbar {
+            display: flex;
+            padding: 1% 2%;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            background-color: rgba(46, 100, 118, 0.9);
+        }
+
+        .navbar ul li {
+            position: relative;
+            list-style: none;
+            display: inline-block;
+            padding: 1% 2%;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .navbar ul li::after {
+            content: '';
+            height: 2px;
+            width: 0;
+            display: block;
+            margin: auto;
+            transition: 0.5s;
+            background-color: #2e6476;
+        }
+
+        .navbar ul li:hover::after {
+            width: 100%;
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        /* Main section */
+        .main {
+            height: 85vh;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .text-box {
+            color: #fff;
+            width: 40%;
+        }
+
+        .text-box h1 {
+            padding: 2px;
+            font-size: 60px;
+        }
+
+        .text-box p {
+            padding: 1% 0;
+        }
+
+        .box {
+            display: flex;
+            flex-direction: column;
+            width: 25%;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            background-color: #2e6476;
+            height: 55%;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .box input {
+            width: 80%;
+            border: none;
+            outline: none;
+            margin: 2% 3%;
+            padding: 3%;
+            border-radius: 5px;
+        }
+
+        .box h1 {
+            margin-bottom: 3%;
+        }
+
+        .btn {
+            background-color: #2e6476;
+            color: #fff;
+            border: 2px solid transparent;
+            padding: 10px 16px;
+            display: inline-block;
+            position: relative;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn1:hover {
+            background-color: #fff;
+            color: #2e6476;
+        }
+
+        .btn2 {
+            background-color: #fff;
+            color: #2e6476;
+            margin-top: 10px;
+            display: block;
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            padding: 8px 16px;
+        }
+        
+        .btn2:hover {
+            color: #fff;
+            background-color: #6a8d9a;
+        }
+
+        /* DOCTORS SECTION */
+        .doctors-section {
+            padding: 60px 0;
+            background-color: #fff;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #2e6476;
+            font-size: 40px;
+            margin-bottom: 40px;
+        }
+
+        .doctors-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        .doctor-card {
+            background-color: #fff;
+            width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .doctor-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 3px solid #2e6476;
+        }
+
+        .doctor-info {
+            padding: 20px;
+        }
+
+        .doctor-specialty {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .doctor-name {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .doctor-bio {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: #2e6476;
+            color: white;
+        }
+
+        .featured-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #2e6476;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        /* Health Tips Section */
+        .health-tips {
+            background-color: #f5f8fa;
+            padding: 60px 0;
+        }
+
+        /* Responsive styles */
+        @media only screen and (max-width: 995px) {
+            .box {
+                width: 40%;
+                height: 69%;
+            }
+            .main {
+                height: auto;
+                padding: 50px 0;
+            }
+        }
+
+        @media only screen and (max-width: 828px) {
+            .text-box h1 {
+                font-size: 40px;
+            }
+        }
+
+        @media only screen and (max-width: 766px) {
+            .navbar ul li {
+                display: block;
+                padding: 2px 0 34px;
+            }
+            .navbar-items {
+                position: absolute;
+                background-color: #2e6476;
+                height: 100vh;
+                width: 200px;
+                top: 0;
+                right: -200px;
+                text-align: left;
+                z-index: 2;
+                transition: all 0.5s ease-out;
+            }
+            .navbar-items.active {
+                right: 0;
+            }
+            .navbar-items ul {
+                padding: 98px 51px 8px 49px;
+            }
+            .burger {
+                display: block;
+                z-index: 3;
+                position: absolute;
+                top: 15px;
+                right: 5%;
+            }
+            .main {
+                flex-direction: column-reverse;
+                height: auto;
+                padding-top: 20px;
+            }
+            .text-box {
+                width: 80%;
+                margin-top: 40px;
+            }
+            .box {
+                width: 80%;
+                margin-bottom: 40px;
+            }
+            .box input {
+                width: 85%;
+            }
+            .doctors-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .doctor-card {
+                width: 90%;
+                max-width: 350px;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media only screen and (max-width: 570px) {
+            .box {
+                width: 90%;
+                padding: 15px;
+            }
+            .text-box {
+                width: 90%;
+            }
+            .text-box h1 {
+                font-size: 32px;
+            }
+            .text-box p {
+                font-size: 14px;
+            }
+            .section-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <nav class="navbar">
+            <img src="/api/placeholder/80/80" alt="MediCare Logo">
+            <div class="navbar-items" id="navItems">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#doctors-section">Doctors</a></li>
+                    <li><a href="#health-tips">Health Tips</a></li>
+                </ul>
+            </div>
+            <div class="burger" onclick="toggleMenu()">☰</div>
+        </nav>
+
+
+    <!-- DOCTORS SECTION -->
+    <section id="doctors-section" class="doctors-section">
+        <h2 class="section-title">Our Specialists</h2>
+        <div class="doctors-container">
+            <!-- Doctor 1 -->
+            <div class="doctor-card">
+                <img src="/api/placeholder/300/250" alt="Pediatrician" class="doctor-image">
+                <div class="doctor-info">
+                    <div class="featured-icon">👶</div>
+                    <p class="doctor-specialty">Pediatrician</p>
+                    <h3 class="doctor-name">Sussie Wolff</h3>
+                    <p class="doctor-bio">Proin consequat, at commodo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor 2 -->
+            <div class="doctor-card">
+                <img src="/api/placeholder/300/250" alt="Dental Surgeon" class="doctor-image">
+                <div class="doctor-info">
+                    <div class="featured-icon">🦷</div>
+                    <p class="doctor-specialty">Dental Surgeon</p>
+                    <h3 class="doctor-name">Ashley Willson</h3>
+                    <p class="doctor-bio">Vivamus sapien ligula, tempus ac ipsum ac, mattis luctus magna. Proin consequat, at commodo.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor 3 -->
+            <div class="doctor-card">
+                <img src="/api/placeholder/300/250" alt="Cosmetic Surgeon" class="doctor-image">
+                <div class="doctor-info">
+                    <div class="featured-icon">✂️</div>
+                    <p class="doctor-specialty">Cosmetic Surgeon</p>
+                    <h3 class="doctor-name">Gabriela Beckett</h3>
+                    <p class="doctor-bio">Donec varius libero tortor. Proin consequat, at commodo eu luctus ipsum aliquet ut.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor 4 -->
+            <div class="doctor-card">
+                <img src="/api/placeholder/300/250" alt="General Doctor" class="doctor-image">
+                <div class="doctor-info">
+                    <div class="featured-icon">🩺</div>
+                    <p class="doctor-specialty">General Doctor</p>
+                    <h3 class="doctor-name">George Button</h3>
+                    <p class="doctor-bio">Curabitur lobortis, eros eu efficitur lacinia. Proin consequat, at commodo velit magna cursus nisi.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                    </div>
+                </div>

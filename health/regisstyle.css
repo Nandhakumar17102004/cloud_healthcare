@@ -1,0 +1,138 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #dbe5f1;
+}
+
+/* Container */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Form Box */
+.form-box {
+    display: flex;
+    width: 800px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Section */
+.left-section {
+    flex: 1;
+    background: #2e6476;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+}
+
+.left-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.left-section p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.switch-btn {
+    background: white;
+    color: #2e6476;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.switch-btn:hover {
+    background: #e0e0e0;
+}
+
+/* Right Section */
+.right-section {
+    flex: 1;
+    padding: 40px;
+    text-align: center;
+}
+
+.right-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+/* Input Group */
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    background: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 1rem;
+}
+
+.input-group i {
+    margin-right: 10px;
+    color: gray;
+}
+
+/* Register Button */
+.register-btn {
+    background: #2e6476;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.register-btn:hover {
+    background: #2e6476;
+}
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #2c5d69; /* Match the left login button's background */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #1f464f; /* Darker shade for hover effect */
+}

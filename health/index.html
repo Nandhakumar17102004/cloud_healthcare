@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Care</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icons">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" 
+    integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courgette&family=Gabarito&family=Inclusive+Sans&family=Inter&family=Montserrat&family=Poppins&family=Raleway&family=Roboto&family=Space+Grotesk&family=Ubuntu&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            text-transform: capitalize;
+            transition: all 0.5s linear;
+            font-family: 'Inclusive Sans', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .appointment-form {
+            background-color: #2f5d68;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .appointment-form select,
+        .appointment-form input,
+        .appointment-form textarea,
+        .appointment-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: none;
+        }
+
+        .appointment-form button {
+            background: #ffffff;
+            color: #2f5d68;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .appointment-form button:hover {
+            background: #1c3f48;
+            color: #fff;
+        }
+        .box1 {
+            text-decoration: none;
+        }
+
+        .background {
+            height: 100vh;
+            width: 100%;
+            background-image: linear-gradient(rgba(2, 10, 10, 0.57), rgba(2, 10, 10, 0.2)), url(/api/placeholder/1600/900);
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .navbar img {
+            width: 80px;
+        }
+
+        .navbar-items {
+            flex: 1;
+            text-align: right;
+        }
+
+        .navbar {
+            display: flex;
+            padding: 1% 2%;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            background-color: rgba(46, 100, 118, 0.9);
+        }
+
+        .navbar ul li {
+            position: relative;
+            list-style: none;
+            display: inline-block;
+            padding: 1% 2%;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .navbar ul li::after {
+            content: '';
+            height: 2px;
+            width: 0;
+            display: block;
+            margin: auto;
+            transition: 0.5s;
+            background-color: #2e6476;
+        }
+
+        .navbar ul li:hover::after {
+            width: 100%;
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        /* Main section */
+        .main {
+            height: 85vh;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .text-box {
+            color: #fff;
+            width: 40%;
+        }
+
+        .text-box h1 {
+            padding: 2px;
+            font-size: 60px;
+        }
+
+        .text-box p {
+            padding: 1% 0;
+        }
+
+        .box {
+            display: flex;
+            flex-direction: column;
+            width: 25%;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            background-color: #2e6476;
+            height: 55%;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .box input {
+            width: 80%;
+            border: none;
+            outline: none;
+            margin: 2% 3%;
+            padding: 3%;
+            border-radius: 5px;
+        }
+
+        .box h1 {
+            margin-bottom: 3%;
+        }
+
+        .btn {
+            background-color: #2e6476;
+            color: #fff;
+            border: 2px solid transparent;
+            padding: 10px 16px;
+            display: inline-block;
+            position: relative;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn1:hover {
+            background-color: #fff;
+            color: #2e6476;
+        }
+
+        .btn2 {
+            background-color: #fff;
+            color: #2e6476;
+            margin-top: 10px;
+            display: block;
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            padding: 8px 16px;
+        }
+        
+        .btn2:hover {
+            color: #fff;
+            background-color: #6a8d9a;
+        }
+
+        .btn3 {
+            background-color: #2e6476;
+            border: 2px solid #2e6476;
+            color: #fff;
+            margin-top: 15px;
+        }
+
+        .btn3:hover {
+            background-color: transparent;
+            color: #2e6476;
+        }
+
+        /* DOCTORS SECTION */
+        .doctors-section {
+            padding: 60px 0;
+            background-color: #fff;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #2e6476;
+            font-size: 40px;
+            margin-bottom: 40px;
+        }
+
+        .doctors-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        .doctor-card {
+            background-color: #fff;
+            width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .doctor-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 3px solid #2e6476;
+        }
+
+        .doctor-info {
+            padding: 20px;
+        }
+
+        .doctor-specialty {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .doctor-name {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .doctor-bio {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: #2e6476;
+            color: white;
+        }
+
+        .featured-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #2e6476;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        /* Services section styles */
+        .services {
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .heading {
+            font-size: 45px;
+            text-align: center;
+            color: #2e6476;
+            margin-bottom: 30px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .box1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            padding: 20px;
+            color: #2e6476;
+            margin: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            background-color: #fff;
+            transition: transform 0.3s;
+        }
+
+        .box1:hover {
+            transform: translateY(-10px);
+        }
+
+        .box1 i {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        /* Quality section styles */
+        .quality {
+            background-color: #2e6476;
+            padding: 30px 0;
+            color: white;
+        }
+
+        .box2 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 300px;
+            margin: 10px;
+        }
+
+        .box2 i {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        /* About section styles */
+        .about {
+            padding: 50px 0;
+            background-color: #f9f9f9;
+        }
+
+        .row1 {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .left {
+            width: 45%;
+        }
+
+        .left img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .right {
+            width: 45%;
+        }
+
+        .right h1 {
+            font-size: 35px;
+            color: #2e6476;
+            margin-bottom: 20px;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #2e6476;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .footer-sec {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .sec {
+            display: flex;
+            justify-content: space-around;
+            width: 50%;
+        }
+
+        .f_box {
+            padding: 20px;
+        }
+
+        .f_box h2 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .f_box p {
+            margin: 10px 0;
+        }
+
+        .f_box i {
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        /* Health Tips Section */
+        .health-tips {
+            background-color: #f5f8fa;
+            padding: 60px 0;
+        }
+
+        /* Responsive styles */
+        @media only screen and (max-width: 995px) {
+            .box {
+                width: 40%;
+                height: 69%;
+            }
+            .main {
+                height: auto;
+                padding: 50px 0;
+            }
+            .sec {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 828px) {
+            .text-box h1 {
+                font-size: 40px;
+            }
+            .row1 {
+                flex-direction: column;
+            }
+            .left, .right {
+                width: 90%;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media only screen and (max-width: 766px) {
+            .navbar ul li {
+                display: block;
+                padding: 2px 0 34px;
+            }
+            .navbar-items {
+                position: absolute;
+                background-color: #2e6476;
+                height: 100vh;
+                width: 200px;
+                top: 0;
+                right: -200px;
+                text-align: left;
+                z-index: 2;
+                transition: all 0.5s ease-out;
+            }
+            .navbar-items.active {
+                right: 0;
+            }
+            .navbar-items ul {
+                padding: 98px 51px 8px 49px;
+            }
+            .burger {
+                display: block;
+                z-index: 3;
+                position: absolute;
+                top: 15px;
+                right: 5%;
+            }
+            .main {
+                flex-direction: column-reverse;
+                height: auto;
+                padding-top: 20px;
+            }
+            .text-box {
+                width: 80%;
+                margin-top: 40px;
+            }
+            .box {
+                width: 80%;
+                margin-bottom: 40px;
+            }
+            .box input {
+                width: 85%;
+            }
+            .doctors-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .doctor-card {
+                width: 90%;
+                max-width: 350px;
+                margin-bottom: 30px;
+            }
+        }
+        @media only screen and (max-width: 570px) {
+            .box {
+                width: 90%;
+                padding: 15px;
+            }
+            .text-box {
+                width: 90%;
+            }
+            .text-box h1 {
+                font-size: 32px;
+            }
+            .text-box p {
+                font-size: 14px;
+            }
+            .section-title {
+                font-size: 32px;
+            }
+            .f_box {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Your Original Home Page Code -->
+    <section class="background">
+        <nav class="navbar">
+            <a href="#" class="logo"><img src="img/logo.png" alt=""></a>
+            <div class="navbar-items h-class">
+                <ul class="nav v-class">
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                    <li><a href="#doctors-section">DOCTORS</a></li>
+                    <li><a href="#services">SERVICES</a></li>
+                </ul>
+            </div>
+            <div class="burger">&#9776</div>
+        </nav>
+        <div class="main">
+            <div class="text-box">
+                <h1>your health is our first priority</h1>
+                <p>We strive to provide advanced healthcare solutions that are accessible, efficient, and personalized. 
+                     With a team of experienced professionals and state-of-the-art technology, we are committed to making 
+                     healthcare smarter, and faster. </p>
+                <a href="" class="btn btn1">visit to know more</a>
+            </div>
+            <div class="box">
+                <h1>appointment</h1>
+                <form id="initialForm">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="tel" name="number" placeholder="Phone Number" required>
+                    <button type="submit" class="btn btn2">Book Appointment</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Your Original Services Section -->
+    <section class="services" id="services">
+        <h1 class="heading">Our services</h1>
+        <div class="row">
+            <a href="#" class="box1">
+                <i class="fas fa-tooth"></i>
+                <h2>AI-Based Diagnosis & Prediction</h2>
+                <p>Utilizing AI for accurate medical diagnosis and future health prediction.</p>
+            </a>
+            <a href="#" class="box1">
+                <i class="fas fa-user-nurse"></i>
+                <h2>Medical Image Processing</h2>
+                <p>Advanced imaging techniques to assist in medical diagnostics.</p>
+            </a>
+            <a href="#" class="box1">
+                <i class="fas fa-tablets"></i>
+                <h2>Access to Medical Records</h2>
+                <p>Secure and seamless access to patient medical history.</p>
+            </a>
+        </div>
+        <div class="row">
+            <a href="#" class="box1">
+                <i class="fas fa-prescription-bottle"></i>
+                <h2>Pharmacy</h2>
+                <p>Efficient pharmaceutical services for patient needs.</p>
+            </a>
+            <a href="#" class="box1">
+                <i class="fas fa-x-ray"></i>
+                <h2>Billing</h2>
+                <p>Automated and accurate medical billing solutions.</p>
+            </a>
+            <a href="#" class="box1">
+                <i class="fas fa-eye"></i>
+                <h2>Chatbot</h2>
+                <p>AI-driven chatbot for instant patient support and queries.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Your Original Quality Section -->
+    <section class="quality">
+        <div class="row">
+            <div class="box2">
+                <i class="fas fa-user-plus"></i>
+                <h2>24/7 available</h2>
+            </div>
+            <div class="box2">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h2>medical cycle care</h2>
+            </div>
+            <div class="box2">
+                <i class="fas fa-award"></i>
+                <h2>quality control</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOCTORS SECTION from doctors.html -->
+    <section id="doctors-section" class="doctors-section">
+        <h2 class="section-title">Our Specialists</h2>
+        <div class="doctors-container">
+            <!-- Doctor 1 -->
+            <div class="doctor-card">
+                <img src="C:\Users\nandh\OneDrive\Documents\mech\SEMESTER\health\4.jpg" alt="Pediatrician" class="doctor-image">
+                <div class="doctor-info">
+                    <div class="featured-icon">👶</div>
+                    <p class="doctor-specialty">Pediatrician</p>
+                    <h3 class="doctor-name">Sussie Wolff</h3>
+                    <p class="doctor-bio">Dr.Sussie Wolff is a compassionate pediatrician committed to ensuring children's well-being through holistic care. She specializes in childhood development and preventive medicine, promoting healthy lifestyles from an early age.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor 2 -->
+            <div class="doctor-card">
+                <img src="C:\Users\nandh\OneDrive\Documents\mech\SEMESTER\health\4.png" alt="Dental Surgeon" class="doctor-image">
+                <div class="doctor-info">
+                    <div class="featured-icon">🦷</div>
+                    <p class="doctor-specialty">Dental Surgeon</p>
+                    <h3 class="doctor-name">Ashley Willson</h3>
+                    <p class="doctor-bio">Dr. Ashley Willson is a renowned oncologist focused on innovative cancer treatments and early detection methods. With a background in medical research, she integrates precision medicine to enhance patient outcomes.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor 3 -->
+            <div class="doctor-card">
+                <img src="C:\Users\nandh\OneDrive\Documents\mech\SEMESTER\health\2.jpg" alt="Cosmetic Surgeon" class="doctor-image">
+                <div class="doctor-info">
+                    <div class="featured-icon">✂️</div>
+                    <p class="doctor-specialty">Cosmetic Surgeon</p>
+                    <h3 class="doctor-name">Gabriela Beckett</h3>
+                    <p class="doctor-bio">Dr. Gabriela Beckett is a board-certified cardiologist with over 10 years of experience in preventive and interventional cardiology. She is passionate about patient education and using cutting-edge technology to improve heart health.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor 4 -->
+            <div class="doctor-card">
+                <img src="C:\Users\nandh\OneDrive\Documents\mech\SEMESTER\health\1.jpg" alt="General Doctor" class="doctor-image">
+                <div class="doctor-info">
+                    <div class="featured-icon">🩺</div>
+                    <p class="doctor-specialty">General Doctor</p>
+                    <h3 class="doctor-name">George Button</h3>
+                    <p class="doctor-bio">Dr. George Button is a highly skilled neurologist specializing in neurodegenerative disorders and AI-driven diagnostics. She is dedicated to advancing research in brain health and providing personalized treatment plans.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Your Original About Section -->
+    <section class="about" id="about">
+        <h1 class="heading">about us</h1>
+        <div class="row row1">
+            <div class="left">
+                <img src="C:\Users\nandh\OneDrive\Documents\mech\SEMESTER\health\pic2.jpg" alt="">
+            </div>
+            <div class="right">
+                <h1>inspiring hope, <br>innovating health</h1>
+                <p>At MediCare, we are dedicated to revolutionizing healthcare through innovative cloud-based solutions. Our mission is to enhance patient care by 
+                    leveraging cutting-edge technologies such as AI-driven diagnosis, secure medical record management, and telehealth services. 
+                    We provide seamless access to medical data, efficient appointment scheduling, and AI-powered healthcare chatbots to ensure patients receive 
+                    timely and accurate care. Our commitment to digital transformation in healthcare aims to improve efficiency, accessibility, 
+                    and patient outcomes while maintaining the highest standards of security and privacy</p>
+                <button class="btn btn3">explore more</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Your Original Footer Section -->
+    <footer id="contact">
+        <div class="footer-sec">
+            <div class="sec">
+                <div class="f_box">
+                    <h2>contact</h2>
+                    <p>email</p>
+                    <p>youtube</p>
+                    <p>facebook</p>
+                    <p>twitter</p>
+                </div>
+                <div class="f_box">
+                    <h2>departments</h2>
+                    <p>radiology</p>
+                    <p>pharmocology</p>
+                    <p>pathology</p>
+                    <p>anatomy</p>
+                </div>
+            </div>
+            <div class="sec">
+                <div class="f_box">
+                    <h2>address</h2>
+                    <p>near Race course,<br> Coimbatore</p>
+                    <p>
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-snapchat"></i>
+                        <i class="fab fa-whatsapp"></i>
+                    </p>
+                </div>
+                <div class="f_box">
+                    <h2>other facilities</h2>
+                    <p>24/7 services</p>
+                    <p>quality control</p>
+                    <p>full cycle medical care</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Appointment Modal -->
+    <div id="appointmentModal" class="modal">
+        <div class="appointment-form">
+            <span class="close">&times;</span>
+            <h2>Appointment Details</h2>
+            <form id="detailedForm">
+                <label for="department">Select Department</label>
+                <select id="department" required>
+                    <option value="">Select Department</option>
+                    <option>Cardiology</option>
+                    <option>Dermatology</option>
+                    <option>Orthopedics</option>
+                    <option>General Medicine</option>
+                </select>
+
+                <label for="doctor">Select Doctor</label>
+                <select id="doctor" required>
+                    <option value="">Select Doctor</option>
+                    <option>Dr. Smith</option>
+                    <option>Dr. Johnson</option>
+                    <option>Dr. Brown</option>
+                    <option>Dr. Davis</option>
+                </select>
+
+                <label for="date">Select Date</label>
+                <input type="date" id="date" required>
+
+                <label for="time">Preferred Time</label>
+                <input type="time" id="time" required>
+
+                <label for="symptoms">Describe Your Symptoms</label>
+                <textarea id="symptoms" rows="3" required></textarea>
+
+                <button type="submit">Confirm Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Toggle menu functionality
+        function toggleMenu() {
+            const navItems = document.getElementById('navItems');
+            navItems.classList.toggle('active');
+        }
+
+        // Handle initial form submission
+        document.getElementById('initialForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('appointmentModal').style.display = 'flex';
+        });
+
+        // Close modal
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('appointmentModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('appointmentModal')) {
+                document.getElementById('appointmentModal').style.display = 'none';
+            }
+        }
+
+        // Handle detailed form submission
+        document.getElementById('detailedForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                name: document.querySelector('#initialForm [name="name"]').value,
+                email: document.querySelector('#initialForm [name="email"]').value,
+                number: document.querySelector('#initialForm [name="number"]').value,
+                department: document.getElementById('department').value,
+                doctor: document.getElementById('doctor').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                symptoms: document.getElementById('symptoms').value
+            };
+
+            // Here you would typically send the data to a server
+            console.log('Appointment Data:', formData);
+            alert('Appointment booked successfully!');
+            document.getElementById('appointmentModal').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
