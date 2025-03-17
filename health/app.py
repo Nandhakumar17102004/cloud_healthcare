@@ -5,11 +5,17 @@ import os
 app = Flask(__name__)
 
 # Get Database URL from environment variables
-DATABASE_URL = os.getenv("DATABASE_URL")
-
 def get_db_connection():
     """Creates a new database connection"""
-    return psycopg2.connect(DATABASE_URL)
+    dsn = os.getenv("DATABASE_URL")
+
+    if not dsn:
+        raise Exception("DATABASE_URL is not set!")
+
+    # Fix the connection string for compatibility
+    dsn = dsn.replace("postgresql://", "postgresql+psycopg2://")
+
+    return psycopg2.connect(dsn)
 
 # ➤ REGISTER USER
 @app.route('/register', methods=['POST'])
@@ -64,7 +70,7 @@ def login():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# ➤ BOOK APPOINTMENT (Already in your app)
+# ➤ BOOK APPOINTMENT
 @app.route('/book_appointment', methods=['POST'])
 def book_appointment():
     try:
