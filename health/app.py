@@ -11,6 +11,60 @@ def get_db_connection():
     """Creates a new database connection"""
     return psycopg2.connect(DATABASE_URL)
 
+# ➤ REGISTER USER
+@app.route('/register', methods=['POST'])
+def register():
+    try:
+        data = request.json
+        username = data['username']
+        password = data['password']  # Ideally, hash this before saving!
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("""
+            INSERT INTO users (username, password) VALUES (%s, %s)
+        """, (username, password))
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return jsonify({"message": "User registered successfully!"}), 201
+
+    except psycopg2.IntegrityError:
+        return jsonify({"error": "Username already exists!"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ➤ LOGIN USER
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        data = request.json
+        username = data['username']
+        password = data['password']
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("""
+            SELECT * FROM users WHERE username = %s AND password = %s
+        """, (username, password))
+        user = cur.fetchone()
+
+        cur.close()
+        conn.close()
+
+        if user:
+            return jsonify({"message": "Login successful!"}), 200
+        else:
+            return jsonify({"error": "Invalid username or password"}), 401
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ➤ BOOK APPOINTMENT (Already in your app)
 @app.route('/book_appointment', methods=['POST'])
 def book_appointment():
     try:
@@ -24,7 +78,7 @@ def book_appointment():
 
         conn = get_db_connection()
         cur = conn.cursor()
-        
+
         cur.execute("""
             INSERT INTO appointments (name, department, doctor, date, time, symptoms)
             VALUES (%s, %s, %s, %s, %s, %s)
