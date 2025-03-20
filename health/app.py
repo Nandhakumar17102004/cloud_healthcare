@@ -1,10 +1,17 @@
 from flask import Flask, request, jsonify
 import psycopg2
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
+from flask_cors import CORS
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
+CORS(app)  # Enable Cross-Origin Resource Sharing
 
-# Get Database URL from environment variables
+# Get Database Connection
 def get_db_connection():
     """Creates a new database connection"""
     dsn = os.getenv("DATABASE_URL")
@@ -12,10 +19,13 @@ def get_db_connection():
     if not dsn:
         raise Exception("DATABASE_URL is not set!")
 
-    # Fix the connection string for compatibility
+    # Ensure compatibility with psycopg2
     dsn = dsn.replace("postgresql://", "postgresql+psycopg2://")
 
-    return psycopg2.connect(dsn)
+    try:
+        return psycopg2.connect(dsn)
+    except Exception as e:
+        raise Exception(f"Database connection error: {str(e)}")
 
 # ➤ REGISTER USER
 @app.route('/register', methods=['POST'])
@@ -23,14 +33,16 @@ def register():
     try:
         data = request.json
         username = data['username']
-        password = data['password']  # Ideally, hash this before saving!
+        password = data['password']
+
+        hashed_password = generate_password_hash(password)  # Hash password
 
         conn = get_db_connection()
         cur = conn.cursor()
 
         cur.execute("""
             INSERT INTO users (username, password) VALUES (%s, %s)
-        """, (username, password))
+        """, (username, hashed_password))
 
         conn.commit()
         cur.close()
@@ -54,15 +66,13 @@ def login():
         conn = get_db_connection()
         cur = conn.cursor()
 
-        cur.execute("""
-            SELECT * FROM users WHERE username = %s AND password = %s
-        """, (username, password))
+        cur.execute("SELECT password FROM users WHERE username = %s", (username,))
         user = cur.fetchone()
 
         cur.close()
         conn.close()
 
-        if user:
+        if user and check_password_hash(user[0], password):
             return jsonify({"message": "Login successful!"}), 200
         else:
             return jsonify({"error": "Invalid username or password"}), 401
@@ -95,6 +105,24 @@ def book_appointment():
         conn.close()
 
         return jsonify({"message": "Appointment booked successfully!"}), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ➤ GET APPOINTMENTS
+@app.route('/appointments', methods=['GET'])
+def get_appointments():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("SELECT id, name, department, doctor, date, time, symptoms FROM appointments")
+        appointments = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        return jsonify({"appointments": appointments}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
