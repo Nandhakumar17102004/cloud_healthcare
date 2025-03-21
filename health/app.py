@@ -19,11 +19,8 @@ def get_db_connection():
     if not dsn:
         raise Exception("DATABASE_URL is not set!")
 
-    # Ensure compatibility with psycopg2
-    dsn = dsn.replace("postgresql://", "postgresql+psycopg2://")
-
     try:
-        return psycopg2.connect(dsn)
+        return psycopg2.connect(dsn, sslmode="require")
     except Exception as e:
         raise Exception(f"Database connection error: {str(e)}")
 
@@ -32,8 +29,11 @@ def get_db_connection():
 def register():
     try:
         data = request.json
-        username = data['username']
-        password = data['password']
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return jsonify({"error": "Username and password are required"}), 400
 
         hashed_password = generate_password_hash(password)  # Hash password
 
@@ -60,8 +60,11 @@ def register():
 def login():
     try:
         data = request.json
-        username = data['username']
-        password = data['password']
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return jsonify({"error": "Username and password are required"}), 400
 
         conn = get_db_connection()
         cur = conn.cursor()
@@ -85,12 +88,15 @@ def login():
 def book_appointment():
     try:
         data = request.json
-        name = data['name']
-        department = data['department']
-        doctor = data['doctor']
-        date = data['date']
-        time = data['time']
-        symptoms = data['symptoms']
+        name = data.get('name')
+        department = data.get('department')
+        doctor = data.get('doctor')
+        date = data.get('date')
+        time = data.get('time')
+        symptoms = data.get('symptoms')
+
+        if not all([name, department, doctor, date, time, symptoms]):
+            return jsonify({"error": "All fields are required"}), 400
 
         conn = get_db_connection()
         cur = conn.cursor()
@@ -122,7 +128,13 @@ def get_appointments():
         cur.close()
         conn.close()
 
-        return jsonify({"appointments": appointments}), 200
+        # Convert list of tuples into JSON format
+        appointments_list = [
+            {"id": row[0], "name": row[1], "department": row[2], "doctor": row[3], "date": row[4], "time": row[5], "symptoms": row[6]}
+            for row in appointments
+        ]
+
+        return jsonify({"appointments": appointments_list}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
